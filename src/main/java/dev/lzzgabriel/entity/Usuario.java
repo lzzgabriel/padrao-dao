@@ -76,5 +76,5 @@ public class Usuario {
 	public void setMomentoCadastro(Instant momentoCadastro) {
 		this.momentoCadastro = momentoCadastro;
 	}
-
+	
 }
