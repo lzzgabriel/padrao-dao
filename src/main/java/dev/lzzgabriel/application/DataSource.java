@@ -4,39 +4,31 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Named;
-
-@Named
-@ApplicationScoped
 public class DataSource {
+	
+	private static DataSource instance;
 	
 	private Connection connection;
 	
-	@PostConstruct
-	public void init() {
-		try {
-			connection = DriverManager.getConnection("jdbc:postgresql:padrao-dao?user=usuario&password=senha");
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public static DataSource getInstance() {
+		if (instance == null) {
+			instance = new DataSource();
 		}
+		return instance;
 	}
 	
-	@PreDestroy
-	public void destroy() {
+	public Connection openConnection() throws SQLException, Exception {
+		Class.forName("org.postgresql.Driver");
+		connection = DriverManager.getConnection("jdbc:postgresql:padrao-dao?user=usuario&password=senha");
+		return connection;
+	}
+	
+	public void closeConnection() {
 		try {
 			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public Connection get() {
-		return connection;
-	}
-	
-	
 	
 }
