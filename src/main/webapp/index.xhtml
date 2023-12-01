@@ -5,30 +5,145 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<head>
-<title>Padrão DAO</title>
-</head>
+<h:head>
+	<title>Padrão DAO</title>
+	<h:outputStylesheet library="webjars"
+		name="primeflex/3.3.1/primeflex.css" />
+	<link type="text/css" rel="stylesheet"
+		href="/resources/css/global.css?v=#{crudView.currentTimestamp}" />
+</h:head>
 
-<body>
+<h:body styleClass="m-0">
 
-<div class="">
-</div>
+	<div id="header" class="p-2 flex text-white-alpha-90 bg-indigo-600">
+		<h4 class="mx-2">Padrão DAO - LzzGabriel</h4>
+		<a href="https://github.com/lzzgabriel/padrao-dao" target="_blank"
+			class="flex align-items-center link-clean"><i
+			class="text-3xl pi pi-github"></i></a>
+	</div>
 
-<p:dialog widgetVar="manageDialog">
-	<h:panelGroup id="manage-dialog-content">
-		<div class="field">
-			<p:outputLabel>ID</p:outputLabel>
-			<p:tag value=""/>
-		</div>
-		<div class="field"></div>
-		<div class="field"></div>
-		<div class="field"></div>
-		<div class="field"></div>
-		<div class="field"></div>
-		<div class="field"></div>
-	</h:panelGroup>
-</p:dialog>
+	<div id="content" class="px-4">
+		<p:dataTable id="dt-usuario" value="#{crudView.usuarios}" size="small"
+			var="usuario">
+			<p:column>
+				<f:facet name="header">
+					<div class="flex justify-content-center">
+						<h:outputText>Id</h:outputText>
+					</div>
+				</f:facet>
+				<h:outputText>#{usuario.id}</h:outputText>
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<div class="flex justify-content-center">
+						<h:outputText>Nome</h:outputText>
+					</div>
+				</f:facet>
+				<h:outputText>#{usuario.nome}</h:outputText>
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<div class="flex justify-content-center">
+						<h:outputText>E-mail</h:outputText>
+					</div>
+				</f:facet>
+				<h:outputText>#{usuario.email}</h:outputText>
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<div class="flex justify-content-center">
+						<h:outputText>Endereço</h:outputText>
+					</div>
+				</f:facet>
+				<h:outputText>#{usuario.enderecoNumero}</h:outputText>
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<div class="flex justify-content-center">
+						<h:outputText>Cidade</h:outputText>
+					</div>
+				</f:facet>
+				<h:outputText>#{usuario.cidadeEstado}</h:outputText>
+			</p:column>
+			<p:column>
+				<p:commandButton type="button" partialSubmit="true" process="@this"
+					oncomplete="PF('manageDialog').show()"
+					update="manage-dialog-content">
+					<f:setPropertyActionListener value="#{usuario}"
+						target="#{crudView.selectedUsuario}" />
+				</p:commandButton>
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<div class="flex justify-content-center">
+						<h:outputText>Momento de cadastro</h:outputText>
+					</div>
+				</f:facet>
+				<h:outputText>
+				#{usuario.momentoCadastro}
+				<f:convertDateTime dateStyle="short" timeStyle="medium" />
+				</h:outputText>
+			</p:column>
+		</p:dataTable>
 
-</body>
+		<p:commandButton value="Inserir usuário" icon="pi pi-plus" actionListener="#{crudView.openNew()}"
+			partialSubmit="true" process="@this"
+			onclick="PF('manageDialog').show()" />
+
+	</div>
+
+	<p:dialog widgetVar="manageDialog" modal="true">
+		<h:panelGroup id="manage-dialog-content">
+			<ui:fragment rendered="#{crudView.selectedUsuario.id ne null}">
+				<div class="field">
+					<p:outputLabel>ID</p:outputLabel>
+					<p:tag value="#{crudView.selectedUsuario.id}" />
+				</div>
+			</ui:fragment>
+			<div class="formgrid grid">
+				<div class="field col">
+					<p:outputLabel for="@next">Nome</p:outputLabel>
+					<p:inputText styleClass="w-full"
+						value="#{crudView.selectedUsuario.nome}" />
+				</div>
+				<div class="field col">
+					<p:outputLabel for="@next">E-mail</p:outputLabel>
+					<p:inputText styleClass="w-full"
+						value="#{crudView.selectedUsuario.email}" />
+				</div>
+			</div>
+			<div class="formgrid grid">
+				<div class="field col">
+					<p:outputLabel for="@next">Logradouro</p:outputLabel>
+					<p:inputText styleClass="w-full"
+						value="#{crudView.selectedUsuario.endereco}" />
+				</div>
+				<div class="field col">
+					<p:outputLabel for="@next">Número</p:outputLabel>
+					<p:inputText styleClass="w-full"
+						value="#{crudView.selectedUsuario.numero}" type="number" />
+				</div>
+			</div>
+			<div class="formgrid grid">
+				<div class="field col">
+					<p:outputLabel for="@next">Cidade</p:outputLabel>
+					<p:inputText styleClass="w-full"
+						value="#{crudView.selectedUsuario.municipio}" />
+				</div>
+				<div class="field col">
+					<p:outputLabel for="@next">UF</p:outputLabel>
+					<p:inputText styleClass="w-full"
+						value="#{crudView.selectedUsuario.uf}" />
+				</div>
+			</div>
+			<p:autoUpdate on="save" />
+		</h:panelGroup>
+		<p:commandButton value="Salvar" icon="pi pi-check"
+			styleClass="my-2 py-2" actionListener="#{crudView.saveUsuario()}"
+			partialSubmit="true" process="@this manage-dialog-content"
+			update="@obs(save)" />
+	</p:dialog>
+
+</h:body>
 
 </html>

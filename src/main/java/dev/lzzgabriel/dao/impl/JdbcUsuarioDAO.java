@@ -14,17 +14,13 @@ import dev.lzzgabriel.dao.UsuarioDAO;
 import dev.lzzgabriel.entity.Usuario;
 import dev.lzzgabriel.utils.StringUtils;
 import jakarta.enterprise.inject.Model;
-import jakarta.inject.Inject;
 
 @Model
 public class JdbcUsuarioDAO implements UsuarioDAO {
 
-	@Inject
-	private DataSource dataSource;
-
 	@Override
 	public Usuario find(Integer id) throws Exception {
-		try (Connection conn = dataSource.get();
+		try (Connection conn = DataSource.getInstance().openConnection();
 				PreparedStatement statement = conn.prepareStatement("SELECT * FROM usuario WHERE id = ?");) {
 
 			statement.setInt(1, id);
@@ -42,7 +38,7 @@ public class JdbcUsuarioDAO implements UsuarioDAO {
 
 	@Override
 	public List<Usuario> findAll() throws Exception {
-		try (Connection conn = dataSource.get();
+		try (Connection conn = DataSource.getInstance().openConnection();
 				PreparedStatement statement = conn.prepareStatement("SELECT * FROM usuario")) {
 
 			ResultSet res = statement.executeQuery();
@@ -60,7 +56,7 @@ public class JdbcUsuarioDAO implements UsuarioDAO {
 
 	@Override
 	public void save(Usuario usuario) throws Exception {
-		try (Connection conn = dataSource.get();
+		try (Connection conn = DataSource.getInstance().openConnection();
 				CallableStatement statement = conn.prepareCall(
 						"INSERT INTO usuario (nome, email, endereco, numero, municipio, uf) values ( ? , ? , ? , ? , ? )")) {
 			int param = 1;

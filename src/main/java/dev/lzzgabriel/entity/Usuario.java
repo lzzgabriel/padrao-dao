@@ -76,5 +76,21 @@ public class Usuario {
 	public void setMomentoCadastro(Instant momentoCadastro) {
 		this.momentoCadastro = momentoCadastro;
 	}
-	
+
+	public String getEnderecoNumero() {
+		if (endereco == null)
+			return null;
+		if (numero == null)
+			return null;
+		return endereco + ", " + numero;
+	}
+
+	public String getCidadeEstado() {
+		if (municipio == null)
+			return null;
+		if (uf == null)
+			return null;
+		return municipio + "/" + uf;
+	}
+
 }
