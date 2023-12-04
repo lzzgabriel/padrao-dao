@@ -47,7 +47,7 @@
   
   <build>
 	  
-	  <finalName>$p${project.artifactId}</finalName>
+	  <finalName>${project.artifactId}</finalName>
 	  
 	  <plugins>
 		  <plugin>
