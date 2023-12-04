@@ -75,6 +75,30 @@ public class JdbcUsuarioDAO implements UsuarioDAO {
 
 	@Override
 	public void edit(Usuario usuario) throws Exception {
+		try (Connection conn = DataSource.getInstance().openConnection();
+				CallableStatement statement = conn.prepareCall(
+						"UPDATE usuario SET nome = ?, email = ?, endereco = ?, numero = ?, municipio = ?, uf = ? where id = ?")) {
+			int param = 1;
+			
+			statement.setString(param++, usuario.getNome());
+			statement.setString(param++, usuario.getEmail());
+			
+			statement.setString(param++, StringUtils.isNullOrEmpty(usuario.getEndereco()) ? null : usuario.getEndereco());
+			statement.setString(param++, usuario.getNumero());
+			statement.setString(param++, usuario.getMunicipio());
+			statement.setString(param++, usuario.getUf());
+			
+			int rowsAffected = statement.executeUpdate();
+			
+			if (rowsAffected == 0) {
+				throw new Exception("Nenhum dado alterado");
+			} else if (rowsAffected > 1) {
+				conn.rollback();
+				throw new Exception("Inconsistência de dados");
+			}
+			
+			conn.commit();
+		}
 	}
 
 	@Override
