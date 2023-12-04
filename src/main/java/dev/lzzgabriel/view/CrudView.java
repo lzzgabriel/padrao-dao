@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.RowEditEvent;
 
 import dev.lzzgabriel.dao.UsuarioDAO;
@@ -37,14 +38,13 @@ public class CrudView implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void load() throws Exception {
 		usuarios = dao.findAll();
 	}
 
 	public void openNew() {
-		if (selectedUsuario.getId() != null)
-			selectedUsuario = new Usuario();
+		selectedUsuario = new Usuario();
 	}
 
 	public void saveUsuario() {
@@ -52,6 +52,8 @@ public class CrudView implements Serializable {
 			dao.save(selectedUsuario);
 			FacesMessageUtils.add("Sucesso", "Usuário inserido com êxito", FacesMessage.SEVERITY_INFO);
 			load();
+			openNew();
+			PrimeFaces.current().ajax().addCallbackParam("hideDialog", true);
 		} catch (Exception e) {
 			FacesMessageUtils.add("Falha ao salvar", e.getMessage(), FacesMessage.SEVERITY_ERROR);
 			e.printStackTrace();
@@ -67,7 +69,7 @@ public class CrudView implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void deleteUsuario(Usuario usuario) {
 		try {
 			dao.delete(usuario);

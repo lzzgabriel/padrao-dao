@@ -122,7 +122,10 @@
 				<p:column style="width: 12.5%">
 					<p:commandButton icon="pi pi-trash" partialSubmit="true"
 						process="@this" styleClass="rounded-button ui-button-danger"
-						actionListener="#{crudView.deleteUsuario(usuario)}" />
+						actionListener="#{crudView.deleteUsuario(usuario)}">
+						<p:confirm header="Confirmação" message="Deseja mesmo excluir?"
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
 				</p:column>
 
 				<p:autoUpdate on="save" />
@@ -133,7 +136,16 @@
 				actionListener="#{crudView.openNew()}" partialSubmit="true"
 				process="@this" styleClass="my-3 ui-button-warning"
 				onclick="PF('manageDialog').show()" />
+
 		</div>
+
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+			responsive="true" width="350">
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no ui-button-flat" />
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" />
+		</p:confirmDialog>
 
 		<p:dialog widgetVar="manageDialog" modal="true" closeOnEscape="true">
 			<h:panelGroup id="manage-dialog-content">
@@ -189,7 +201,7 @@
 					styleClass="ui-button-warning" partialSubmit="true"
 					process="@this manage-dialog-content"
 					update="@this @obs(save) msgs dt-usuario"
-					oncomplete="PF('manageDialog').hide()" />
+					oncomplete="if (args &amp;&amp; args.hideDialog) { PF('manageDialog').hide() }" />
 			</div>
 
 		</p:dialog>
