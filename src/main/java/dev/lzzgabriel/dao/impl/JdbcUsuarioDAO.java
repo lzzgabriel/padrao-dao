@@ -107,6 +107,23 @@ public class JdbcUsuarioDAO implements UsuarioDAO {
 
 	@Override
 	public void delete(Usuario usuario) throws Exception {
+		try (Connection conn = DataSource.getInstance().openConnection();
+				CallableStatement statement = conn.prepareCall("DELETE FROM usuario WHERE id = ?")) {
+			int param = 1;
+			
+			statement.setInt(param, usuario.getId());
+			
+			int rowsAffected = statement.executeUpdate();
+			
+			if (rowsAffected != 1) {
+				conn.rollback();
+				throw new Exception("Erro de operação.");
+			}
+			
+			conn.commit();
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	private Usuario fetch(ResultSet res) throws SQLException {
