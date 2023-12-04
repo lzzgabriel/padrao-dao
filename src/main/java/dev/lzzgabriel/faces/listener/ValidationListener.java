@@ -19,7 +19,6 @@ public class ValidationListener implements PhaseListener {
 	@Override
 	public void beforePhase(PhaseEvent event) {
 		if (FacesContext.getCurrentInstance().isValidationFailed()) {
-			System.err.println("Erro de validação");
 			FacesMessageUtils.add("Erro de validação", "Confira os dados inseridos", FacesMessage.SEVERITY_ERROR);
 		}
 	}
