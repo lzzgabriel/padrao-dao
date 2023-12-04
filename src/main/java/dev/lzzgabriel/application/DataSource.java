@@ -20,6 +20,7 @@ public class DataSource {
 	public Connection openConnection() throws SQLException, Exception {
 		Class.forName("org.postgresql.Driver");
 		connection = DriverManager.getConnection("jdbc:postgresql:padrao-dao?user=usuario&password=senha");
+		connection.setAutoCommit(false);
 		return connection;
 	}
 	
