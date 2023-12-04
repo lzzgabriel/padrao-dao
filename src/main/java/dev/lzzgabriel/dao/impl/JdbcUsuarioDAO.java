@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -58,7 +60,7 @@ public class JdbcUsuarioDAO implements UsuarioDAO {
 	public void save(Usuario usuario) throws Exception {
 		try (Connection conn = DataSource.getInstance().openConnection();
 				CallableStatement statement = conn.prepareCall(
-						"INSERT INTO usuario (nome, email, endereco, numero, municipio, uf) values ( ? , ? , ? , ? , ? , ? )")) {
+						"INSERT INTO usuario (nome, email, endereco, numero, municipio, uf, momento_cadastro) values ( ? , ? , ? , ? , ? , ? , ?)")) {
 			int param = 1;
 			
 			statement.setString(param++, usuario.getNome());
@@ -68,6 +70,14 @@ public class JdbcUsuarioDAO implements UsuarioDAO {
 			statement.setString(param++, usuario.getNumero());
 			statement.setString(param++, usuario.getMunicipio());
 			statement.setString(param++, usuario.getUf());
+			statement.setTimestamp(param++, Timestamp.from(Instant.now()));
+			
+			int rowsAffected = statement.executeUpdate();
+			
+			if (rowsAffected != 1) {
+				conn.rollback();
+				throw new Exception("Falha na operação");
+			}
 			
 			conn.commit();
 		} catch (Exception e) {
