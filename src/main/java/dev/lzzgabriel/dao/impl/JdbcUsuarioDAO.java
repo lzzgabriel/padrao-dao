@@ -39,7 +39,7 @@ public class JdbcUsuarioDAO implements UsuarioDAO {
 	@Override
 	public List<Usuario> findAll() throws Exception {
 		try (Connection conn = DataSource.getInstance().openConnection();
-				PreparedStatement statement = conn.prepareStatement("SELECT * FROM usuario")) {
+				PreparedStatement statement = conn.prepareStatement("SELECT * FROM usuario ORDER BY id")) {
 
 			ResultSet res = statement.executeQuery();
 
@@ -89,6 +89,8 @@ public class JdbcUsuarioDAO implements UsuarioDAO {
 			statement.setString(param++, usuario.getNumero());
 			statement.setString(param++, usuario.getMunicipio());
 			statement.setString(param++, usuario.getUf());
+			
+			statement.setInt(param++, usuario.getId());
 			
 			int rowsAffected = statement.executeUpdate();
 			
