@@ -1,4 +1,4 @@
-package dev.lzzgabriel.utils.converter;
+package dev.lzzgabriel.faces.converter;
 
 import java.time.Instant;
 import java.time.ZoneId;
