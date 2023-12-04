@@ -92,11 +92,9 @@ public class JdbcUsuarioDAO implements UsuarioDAO {
 			
 			int rowsAffected = statement.executeUpdate();
 			
-			if (rowsAffected == 0) {
-				throw new Exception("Nenhum dado alterado");
-			} else if (rowsAffected > 1) {
+			if (rowsAffected != 1) {
 				conn.rollback();
-				throw new Exception("Inconsistência de dados");
+				throw new Exception("Erro de operação");
 			}
 			
 			conn.commit();
