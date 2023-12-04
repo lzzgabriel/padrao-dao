@@ -58,7 +58,7 @@ public class JdbcUsuarioDAO implements UsuarioDAO {
 	public void save(Usuario usuario) throws Exception {
 		try (Connection conn = DataSource.getInstance().openConnection();
 				CallableStatement statement = conn.prepareCall(
-						"INSERT INTO usuario (nome, email, endereco, numero, municipio, uf) values ( ? , ? , ? , ? , ? )")) {
+						"INSERT INTO usuario (nome, email, endereco, numero, municipio, uf) values ( ? , ? , ? , ? , ? , ? )")) {
 			int param = 1;
 			
 			statement.setString(param++, usuario.getNome());
@@ -68,6 +68,8 @@ public class JdbcUsuarioDAO implements UsuarioDAO {
 			statement.setString(param++, usuario.getNumero());
 			statement.setString(param++, usuario.getMunicipio());
 			statement.setString(param++, usuario.getUf());
+			
+			conn.commit();
 		} catch (Exception e) {
 			throw e;
 		}
@@ -98,6 +100,8 @@ public class JdbcUsuarioDAO implements UsuarioDAO {
 			}
 			
 			conn.commit();
+		} catch (Exception e) {
+			throw e;
 		}
 	}
 
