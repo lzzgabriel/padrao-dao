@@ -92,7 +92,7 @@ public class Usuario {
 			return null;
 		if (StringUtils.isNullOrEmpty(uf))
 			return null;
-		return municipio + "/" + uf;
+		return municipio + " - " + uf;
 	}
 
 }
