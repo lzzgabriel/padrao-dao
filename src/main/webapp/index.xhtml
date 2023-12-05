@@ -130,21 +130,24 @@
 							<h:outputText>Momento de cadastro</h:outputText>
 						</div>
 					</f:facet>
-					<h:outputText styleClass="flex justify-content-center"
+					<h:outputText
+						styleClass="flex md:justify-content-center justify-content-start"
 						value="#{usuario.momentoCadastro}" converter="instantConverter" />
 				</p:column>
 				<p:column styleClass="dt-10">
-					<p:rowEditor editTitle="Editar linha" cancelTitle="Cancelar edição"
+					<p:rowEditor styleClass="flex md:justify-content-center justify-content-end" editTitle="Editar linha" cancelTitle="Cancelar edição"
 						saveTitle="Salvar linha" />
 				</p:column>
 				<p:column styleClass="dt-5">
-					<p:commandButton icon="pi pi-trash" partialSubmit="true"
-						process="@this" styleClass="rounded-button ui-button-danger"
-						update="@this @obs(delete)"
-						actionListener="#{crudView.deleteUsuario(usuario)}">
-						<p:confirm header="Confirmação" message="Deseja mesmo excluir?"
-							icon="pi pi-exclamation-triangle" />
-					</p:commandButton>
+					<div class="flex md:justify-content-center justify-content-end">
+						<p:commandButton icon="pi pi-trash" partialSubmit="true"
+							process="@this" styleClass="rounded-button ui-button-danger"
+							update="@this @obs(delete)"
+							actionListener="#{crudView.deleteUsuario(usuario)}">
+							<p:confirm header="Confirmação" message="Deseja mesmo excluir?"
+								icon="pi pi-exclamation-triangle" />
+						</p:commandButton>
+					</div>
 				</p:column>
 
 				<p:autoUpdate on="save, delete" />
