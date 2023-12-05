@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html lang="pt_BR" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -6,11 +6,13 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<title>Padrão DAO</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="utf-8" />
 	<h:outputStylesheet library="webjars"
 		name="primeflex/3.3.1/primeflex.css" />
 	<link type="text/css" rel="stylesheet"
 		href="./resources/css/global.css?v=#{crudView.currentTimestamp}" />
+	<title>Padrão DAO</title>
 </h:head>
 
 <h:body styleClass="m-0">
@@ -28,23 +30,16 @@
 			<p:autoUpdate on="obsMsg" />
 		</p:growl>
 
-		<div id="content" class="px-4">
+		<div id="content">
 
 			<p:dataTable id="dt-usuario" value="#{crudView.usuarios}"
-				size="small" var="usuario" editable="true">
+				stripedRows="true" size="small" var="usuario" editable="true"
+				styleClass="mb-8" reflow="true">
 
 				<p:ajax event="rowEdit" listener="#{crudView.onRowEdit}"
 					update="@obs(obsMsg)" />
 
-				<p:column style="width: 5%">
-					<f:facet name="header">
-						<div class="flex justify-content-center">
-							<h:outputText>Id</h:outputText>
-						</div>
-					</f:facet>
-					<h:outputText value="#{usuario.id}" />
-				</p:column>
-				<p:column style="width: 20%">
+				<p:column styleClass="dt-15">
 					<f:facet name="header">
 						<div class="flex justify-content-center">
 							<h:outputText>Nome</h:outputText>
@@ -59,7 +54,7 @@
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
-				<p:column style="width: 12.5%">
+				<p:column styleClass="dt-15">
 					<f:facet name="header">
 						<div class="flex justify-content-center">
 							<h:outputText>E-mail</h:outputText>
@@ -74,7 +69,7 @@
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
-				<p:column style="width: 12.5%">
+				<p:column styleClass="dt-20">
 					<f:facet name="header">
 						<div class="flex justify-content-center">
 							<h:outputText>Endereço</h:outputText>
@@ -90,7 +85,7 @@
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
-				<p:column style="width: 12.5%">
+				<p:column styleClass="dt-20">
 					<f:facet name="header">
 						<div class="flex justify-content-center">
 							<h:outputText>Cidade</h:outputText>
@@ -106,20 +101,20 @@
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
-				<p:column style="width: 12.5%">
+				<p:column styleClass="dt-15">
 					<f:facet name="header">
 						<div class="flex justify-content-center">
 							<h:outputText>Momento de cadastro</h:outputText>
 						</div>
 					</f:facet>
-					<h:outputText value="#{usuario.momentoCadastro}"
+					<h:outputText styleClass="flex justify-content-center" value="#{usuario.momentoCadastro}"
 						converter="instantConverter" />
 				</p:column>
-				<p:column style="width: 12.5%">
+				<p:column styleClass="dt-10">
 					<p:rowEditor editTitle="Editar linha" cancelTitle="Cancelar edição"
 						saveTitle="Salvar linha" />
 				</p:column>
-				<p:column style="width: 12.5%">
+				<p:column styleClass="dt-5">
 					<p:commandButton icon="pi pi-trash" partialSubmit="true"
 						process="@this" styleClass="rounded-button ui-button-danger"
 						actionListener="#{crudView.deleteUsuario(usuario)}">
@@ -134,7 +129,7 @@
 
 			<p:commandButton value="Inserir usuário" icon="pi pi-plus"
 				actionListener="#{crudView.openNew()}" partialSubmit="true"
-				process="@this" styleClass="my-3 ui-button-warning"
+				process="@this" styleClass="m-3 ui-button-warning insert-button"
 				onclick="PF('manageDialog').show()" />
 
 		</div>
