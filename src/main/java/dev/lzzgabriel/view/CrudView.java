@@ -2,6 +2,7 @@ package dev.lzzgabriel.view;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 
 import org.primefaces.PrimeFaces;
@@ -27,12 +28,16 @@ public class CrudView implements Serializable {
 
 	private List<Usuario> usuarios;
 
+	private List<String> estados;
+
 	private Usuario selectedUsuario;
 
 	@PostConstruct
 	public void init() {
 		try {
 			load();
+			estados = Arrays.asList(new String[] { "AC", "AL", "AP", "AM", "BA", "CE", "ES", "GO", "MA", "MT", "MS",
+					"MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO" });
 			selectedUsuario = new Usuario();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,6 +95,14 @@ public class CrudView implements Serializable {
 
 	public void setUsuarios(List<Usuario> usuarios) {
 		this.usuarios = usuarios;
+	}
+
+	public List<String> getEstados() {
+		return estados;
+	}
+
+	public void setEstados(List<String> estados) {
+		this.estados = estados;
 	}
 
 	public Usuario getSelectedUsuario() {

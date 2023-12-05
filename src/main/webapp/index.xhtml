@@ -97,7 +97,10 @@
 						</f:facet>
 						<f:facet name="input">
 							<p:inputText value="#{usuario.municipio}" />
-							<p:inputMask mask="AA" value="#{usuario.uf}" />
+							<p:selectOneMenu value="#{usuario.uf}">
+								<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+								<f:selectItems value="#{crudView.estados}" var="estado" />
+							</p:selectOneMenu>
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
@@ -107,8 +110,8 @@
 							<h:outputText>Momento de cadastro</h:outputText>
 						</div>
 					</f:facet>
-					<h:outputText styleClass="flex justify-content-center" value="#{usuario.momentoCadastro}"
-						converter="instantConverter" />
+					<h:outputText styleClass="flex justify-content-center"
+						value="#{usuario.momentoCadastro}" converter="instantConverter" />
 				</p:column>
 				<p:column styleClass="dt-10">
 					<p:rowEditor editTitle="Editar linha" cancelTitle="Cancelar edição"
@@ -135,7 +138,7 @@
 		</div>
 
 		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
-			responsive="true" width="350">
+			responsive="true" width="auto">
 			<p:commandButton value="Não" type="button"
 				styleClass="ui-confirmdialog-no ui-button-flat" />
 			<p:commandButton value="Sim" type="button"
@@ -182,9 +185,12 @@
 							value="#{crudView.selectedUsuario.municipio}" />
 					</div>
 					<div class="field col">
-						<p:outputLabel for="@next">UF</p:outputLabel>
-						<p:inputMask mask="AA" styleClass="w-full"
-							value="#{crudView.selectedUsuario.uf}" />
+						<p:outputLabel>UF</p:outputLabel>
+						<p:selectOneMenu styleClass="w-full"
+							value="#{crudView.selectedUsuario.uf}">
+							<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+							<f:selectItems value="#{crudView.estados}" var="estado" />
+						</p:selectOneMenu>
 					</div>
 				</div>
 				<p:autoUpdate on="save" />
