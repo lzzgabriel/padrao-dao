@@ -8,6 +8,9 @@
 		<param-name>jakarta.faces.FACELETS_DEVELOPMENT</param-name>
 		<param-value>true</param-value>
 	</context-param>
+	<session-config>
+		<session-timeout>0</session-timeout>
+	</session-config>
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
