@@ -27,7 +27,7 @@
 	<h:form>
 
 		<p:growl id="msgs" showDetail="true" globalOnly="true">
-			<p:autoUpdate on="obsMsg" />
+			<p:autoUpdate on="save, edit, delete" />
 		</p:growl>
 
 		<div id="content">
@@ -37,7 +37,7 @@
 				styleClass="mb-8" reflow="true">
 
 				<p:ajax event="rowEdit" listener="#{crudView.onRowEdit}"
-					update="@obs(obsMsg)" />
+					update="@obs(edit)" />
 
 				<p:column styleClass="dt-15">
 					<f:facet name="header">
@@ -50,7 +50,10 @@
 							<h:outputText value="#{usuario.nome}" />
 						</f:facet>
 						<f:facet name="input">
-							<p:inputText styleClass="w-full" value="#{usuario.nome}" />
+							<div class="field">
+								<p:outputLabel for="@next">Nome</p:outputLabel>
+								<p:inputText styleClass="w-full" value="#{usuario.nome}" />
+							</div>
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
@@ -65,7 +68,10 @@
 							<h:outputText value="#{usuario.email}" />
 						</f:facet>
 						<f:facet name="input">
-							<p:inputText styleClass="w-full" value="#{usuario.email}" />
+							<div class="field">
+								<p:outputLabel for="@next">E-mail</p:outputLabel>
+								<p:inputText styleClass="w-full" value="#{usuario.email}" />
+							</div>
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
@@ -80,8 +86,14 @@
 							<h:outputText value="#{usuario.enderecoNumero}" />
 						</f:facet>
 						<f:facet name="input">
-							<p:inputText value="#{usuario.endereco}" styleClass="" />
-							<p:inputText value="#{usuario.numero}" styleClass="" />
+							<div class="field">
+								<p:outputLabel for="@next">Logradouro</p:outputLabel>
+								<p:inputText value="#{usuario.endereco}" styleClass="w-full" />
+							</div>
+							<div class="field">
+								<p:outputLabel for="@next">Número</p:outputLabel>
+								<p:inputText value="#{usuario.numero}" styleClass="w-full" />
+							</div>
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
@@ -96,11 +108,19 @@
 							<h:outputText value="#{usuario.cidadeEstado}" />
 						</f:facet>
 						<f:facet name="input">
-							<p:inputText value="#{usuario.municipio}" />
-							<p:selectOneMenu value="#{usuario.uf}">
-								<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
-								<f:selectItems value="#{crudView.estados}" var="estado" />
-							</p:selectOneMenu>
+							<div class="field">
+								<p:outputLabel for="@next">Município</p:outputLabel>
+								<p:inputText value="#{usuario.municipio}" styleClass="w-full" />
+							</div>
+							<div class="field">
+								<p:outputLabel>UF</p:outputLabel>
+								<div class="w-full">
+									<p:selectOneMenu value="#{usuario.uf}">
+										<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+										<f:selectItems value="#{crudView.estados}" var="estado" />
+									</p:selectOneMenu>
+								</div>
+							</div>
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
@@ -120,13 +140,14 @@
 				<p:column styleClass="dt-5">
 					<p:commandButton icon="pi pi-trash" partialSubmit="true"
 						process="@this" styleClass="rounded-button ui-button-danger"
+						update="@this @obs(delete)"
 						actionListener="#{crudView.deleteUsuario(usuario)}">
 						<p:confirm header="Confirmação" message="Deseja mesmo excluir?"
 							icon="pi pi-exclamation-triangle" />
 					</p:commandButton>
 				</p:column>
 
-				<p:autoUpdate on="save" />
+				<p:autoUpdate on="save, delete" />
 
 			</p:dataTable>
 
@@ -145,7 +166,8 @@
 				styleClass="ui-confirmdialog-yes" />
 		</p:confirmDialog>
 
-		<p:dialog widgetVar="manageDialog" modal="true" closeOnEscape="true">
+		<p:dialog widgetVar="manageDialog" modal="true" closeOnEscape="true"
+			header="Insira as informações do usuário">
 			<h:panelGroup id="manage-dialog-content">
 				<div class="formgrid grid">
 					<div class="field col">
@@ -200,8 +222,7 @@
 				<p:commandButton value="Salvar" icon="pi pi-check"
 					actionListener="#{crudView.saveUsuario()}"
 					styleClass="ui-button-warning" partialSubmit="true"
-					process="@this manage-dialog-content"
-					update="@this @obs(save) msgs dt-usuario"
+					process="@this manage-dialog-content" update="@this @obs(save)"
 					oncomplete="if (args &amp;&amp; args.hideDialog) { PF('manageDialog').hide() }" />
 			</div>
 
