@@ -2,6 +2,8 @@ package dev.lzzgabriel.entity;
 
 import java.time.Instant;
 
+import dev.lzzgabriel.utils.StringUtils;
+
 public class Usuario {
 
 	private Integer id;
@@ -78,17 +80,17 @@ public class Usuario {
 	}
 
 	public String getEnderecoNumero() {
-		if (endereco == null)
+		if (StringUtils.isNullOrEmpty(endereco))
 			return null;
-		if (numero == null)
+		if (StringUtils.isNullOrEmpty(numero))
 			return null;
 		return endereco + ", " + numero;
 	}
 
 	public String getCidadeEstado() {
-		if (municipio == null)
+		if (StringUtils.isNullOrEmpty(municipio))
 			return null;
-		if (uf == null)
+		if (StringUtils.isNullOrEmpty(uf))
 			return null;
 		return municipio + "/" + uf;
 	}
