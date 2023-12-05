@@ -79,6 +79,7 @@ public class CrudView implements Serializable {
 		try {
 			dao.delete(usuario);
 			FacesMessageUtils.add("Sucesso", "Usuário excluído com êxito", FacesMessage.SEVERITY_INFO);
+			load();
 		} catch (Exception e) {
 			FacesMessageUtils.add("Falha ao excluir", e.getMessage(), FacesMessage.SEVERITY_ERROR);
 			e.printStackTrace();
