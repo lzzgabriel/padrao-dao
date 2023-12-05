@@ -15,14 +15,14 @@ public class InstantConverter implements Converter<Instant> {
 
 	@Override
 	public Instant getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
-		Instant obj = (Instant) DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+		Instant obj = (Instant) DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
 				.withZone(ZoneId.of("America/Sao_Paulo")).parse(value);
 		return obj;
 	}
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Instant value) throws ConverterException {
-		String str = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+		String str = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
 				.format(value.atZone(ZoneId.of("America/Sao_Paulo")));
 		return str;
 	}
