@@ -82,7 +82,7 @@
 					<div class="flex md:justify-content-center justify-content-end">
 						<p:commandButton icon="pi pi-pencil" partialSubmit="true"
 							process="@this" oncomplete="PF('manageDialog').show()"
-							update="@obs(load)"
+							update="@obs(load)" resetValues="true"
 							styleClass="rounded-button ui-button-flat ui-button-secondary">
 							<f:setPropertyActionListener value="#{usuario}"
 								target="#{crudView.selectedUsuario}" />
@@ -107,9 +107,9 @@
 				styleClass="m-3 ui-button-warning insert-button"
 				oncomplete="PF('manageDialog').show()">
 				<p:ajax disabled="#{crudView.selectedUsuario.id eq null}"
-					listener="#{crudView.openNew()}" update="@obs(new)" />
+					listener="#{crudView.openNew()}" update="@obs(new)" resetValues="true" />
 				<p:ajax disabled="#{crudView.selectedUsuario.id ne null}"
-					update="@obs(open)" />
+					update="@obs(open)" resetValues="true" />
 				<p:autoUpdate on="new, open, load" />
 			</p:commandButton>
 
@@ -123,7 +123,7 @@
 				styleClass="ui-confirmdialog-yes" />
 		</p:confirmDialog>
 
-		<p:dialog id="manage-dialog" widgetVar="manageDialog" modal="true"
+		<p:dialog widgetVar="manageDialog" modal="true"
 			closeOnEscape="true" header="Insira as informações do usuário">
 			<h:panelGroup id="manage-dialog-content">
 				<ui:fragment rendered="#{crudView.selectedUsuario.id ne null}">
@@ -194,7 +194,7 @@
 						oncomplete="if (args &amp;&amp; args.hideDialog) { PF('manageDialog').hide() }" />
 				</div>
 
-				<p:autoUpdate on="new, save, load, delete" />
+				<p:autoUpdate on="new, save, load, edit, delete" />
 
 			</h:panelGroup>
 
