@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.event.RowEditEvent;
 
 import dev.lzzgabriel.dao.UsuarioDAO;
 import dev.lzzgabriel.entity.Usuario;
@@ -65,10 +64,13 @@ public class CrudView implements Serializable {
 		}
 	}
 
-	public void onRowEdit(RowEditEvent<Usuario> event) {
+	public void editUsuario() {
 		try {
-			dao.edit(event.getObject());
+			dao.edit(selectedUsuario);
 			FacesMessageUtils.add("Sucesso", "Usuário alterado com êxito", FacesMessage.SEVERITY_INFO);
+			load();
+			openNew();
+			PrimeFaces.current().ajax().addCallbackParam("hideDialog", true);
 		} catch (Exception e) {
 			FacesMessageUtils.add("Falha ao alterar", e.getMessage(), FacesMessage.SEVERITY_ERROR);
 			e.printStackTrace();
@@ -80,6 +82,7 @@ public class CrudView implements Serializable {
 			dao.delete(usuario);
 			FacesMessageUtils.add("Sucesso", "Usuário excluído com êxito", FacesMessage.SEVERITY_INFO);
 			load();
+			openNew();
 		} catch (Exception e) {
 			FacesMessageUtils.add("Falha ao excluir", e.getMessage(), FacesMessage.SEVERITY_ERROR);
 			e.printStackTrace();

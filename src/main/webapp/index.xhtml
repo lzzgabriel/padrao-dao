@@ -36,44 +36,21 @@
 				stripedRows="true" size="small" var="usuario" editable="true"
 				styleClass="mb-8" reflow="true">
 
-				<p:ajax event="rowEdit" listener="#{crudView.onRowEdit}"
-					update="@obs(edit)" />
-
 				<p:column styleClass="dt-15">
 					<f:facet name="header">
 						<div class="flex justify-content-center">
-							<h:outputText>Nome</h:outputText>
+							<h:outputText styleClass="font-bold">Nome</h:outputText>
 						</div>
 					</f:facet>
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{usuario.nome}" />
-						</f:facet>
-						<f:facet name="input">
-							<div class="field">
-								<p:outputLabel for="@next">Nome</p:outputLabel>
-								<p:inputText styleClass="w-full" value="#{usuario.nome}" />
-							</div>
-						</f:facet>
-					</p:cellEditor>
+					<h:outputText value="#{usuario.nome}" />
 				</p:column>
-				<p:column styleClass="dt-15">
+				<p:column styleClass="dt-20">
 					<f:facet name="header">
 						<div class="flex justify-content-center">
 							<h:outputText>E-mail</h:outputText>
 						</div>
 					</f:facet>
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{usuario.email}" />
-						</f:facet>
-						<f:facet name="input">
-							<div class="field">
-								<p:outputLabel for="@next">E-mail</p:outputLabel>
-								<p:inputText styleClass="w-full" value="#{usuario.email}" />
-							</div>
-						</f:facet>
-					</p:cellEditor>
+					<h:outputText value="#{usuario.email}" />
 				</p:column>
 				<p:column styleClass="dt-20">
 					<f:facet name="header">
@@ -81,21 +58,7 @@
 							<h:outputText>Endereço</h:outputText>
 						</div>
 					</f:facet>
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{usuario.enderecoNumero}" />
-						</f:facet>
-						<f:facet name="input">
-							<div class="field">
-								<p:outputLabel for="@next">Logradouro</p:outputLabel>
-								<p:inputText value="#{usuario.endereco}" styleClass="w-full" />
-							</div>
-							<div class="field">
-								<p:outputLabel for="@next">Número</p:outputLabel>
-								<p:inputText value="#{usuario.numero}" styleClass="w-full" />
-							</div>
-						</f:facet>
-					</p:cellEditor>
+					<h:outputText value="#{usuario.enderecoNumero}" />
 				</p:column>
 				<p:column styleClass="dt-20">
 					<f:facet name="header">
@@ -103,26 +66,7 @@
 							<h:outputText>Cidade</h:outputText>
 						</div>
 					</f:facet>
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{usuario.cidadeEstado}" />
-						</f:facet>
-						<f:facet name="input">
-							<div class="field">
-								<p:outputLabel for="@next">Município</p:outputLabel>
-								<p:inputText value="#{usuario.municipio}" styleClass="w-full" />
-							</div>
-							<div class="field">
-								<p:outputLabel>UF</p:outputLabel>
-								<div class="w-full">
-									<p:selectOneMenu value="#{usuario.uf}">
-										<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
-										<f:selectItems value="#{crudView.estados}" var="estado" />
-									</p:selectOneMenu>
-								</div>
-							</div>
-						</f:facet>
-					</p:cellEditor>
+					<h:outputText value="#{usuario.cidadeEstado}" />
 				</p:column>
 				<p:column styleClass="dt-15">
 					<f:facet name="header">
@@ -131,17 +75,21 @@
 						</div>
 					</f:facet>
 					<h:outputText
-						styleClass="flex md:justify-content-center justify-content-start"
+						styleClass="md:flex md:justify-content-center inline-block justify-content-start"
 						value="#{usuario.momentoCadastro}" converter="instantConverter" />
-				</p:column>
-				<p:column styleClass="dt-10">
-					<p:rowEditor styleClass="flex md:justify-content-center justify-content-end" editTitle="Editar linha" cancelTitle="Cancelar edição"
-						saveTitle="Salvar linha" />
 				</p:column>
 				<p:column styleClass="dt-5">
 					<div class="flex md:justify-content-center justify-content-end">
+						<p:commandButton icon="pi pi-pencil" partialSubmit="true"
+							process="@this" oncomplete="PF('manageDialog').show()"
+							update="@obs(load)"
+							styleClass="rounded-button ui-button-flat ui-button-secondary">
+							<f:setPropertyActionListener value="#{usuario}"
+								target="#{crudView.selectedUsuario}" />
+						</p:commandButton>
 						<p:commandButton icon="pi pi-trash" partialSubmit="true"
-							process="@this" styleClass="rounded-button ui-button-danger"
+							process="@this"
+							styleClass="rounded-button ui-button-flat ui-button-danger"
 							update="@this @obs(delete)"
 							actionListener="#{crudView.deleteUsuario(usuario)}">
 							<p:confirm header="Confirmação" message="Deseja mesmo excluir?"
@@ -150,14 +98,15 @@
 					</div>
 				</p:column>
 
-				<p:autoUpdate on="save, delete" />
+				<p:autoUpdate on="save, edit, delete" />
 
 			</p:dataTable>
 
 			<p:commandButton value="Inserir usuário" icon="pi pi-plus"
 				actionListener="#{crudView.openNew()}" partialSubmit="true"
 				process="@this" styleClass="m-3 ui-button-warning insert-button"
-				onclick="PF('manageDialog').show()" />
+				oncomplete="PF('manageDialog').show()">
+			</p:commandButton>
 
 		</div>
 
@@ -169,9 +118,15 @@
 				styleClass="ui-confirmdialog-yes" />
 		</p:confirmDialog>
 
-		<p:dialog widgetVar="manageDialog" modal="true" closeOnEscape="true"
-			header="Insira as informações do usuário">
+		<p:dialog id="manage-dialog" widgetVar="manageDialog" modal="true"
+			closeOnEscape="true" header="Insira as informações do usuário">
 			<h:panelGroup id="manage-dialog-content">
+				<ui:fragment rendered="#{crudView.selectedUsuario.id ne null}">
+					<div class="field">
+						<p:outputLabel>Id</p:outputLabel>
+						<p:tag value="#{crudView.selectedUsuario.id}" />
+					</div>
+				</ui:fragment>
 				<div class="formgrid grid">
 					<div class="field col">
 						<p:outputLabel for="@next">Nome</p:outputLabel>
@@ -218,16 +173,25 @@
 						</p:selectOneMenu>
 					</div>
 				</div>
-				<p:autoUpdate on="save" />
-			</h:panelGroup>
 
-			<div class="flex justify-content-end my-2">
-				<p:commandButton value="Salvar" icon="pi pi-check"
-					actionListener="#{crudView.saveUsuario()}"
-					styleClass="ui-button-warning" partialSubmit="true"
-					process="@this manage-dialog-content" update="@this @obs(save)"
-					oncomplete="if (args &amp;&amp; args.hideDialog) { PF('manageDialog').hide() }" />
-			</div>
+				<div class="flex justify-content-end my-2">
+					<p:commandButton value="Salvar" icon="pi pi-check"
+						rendered="#{crudView.selectedUsuario.id eq null}"
+						actionListener="#{crudView.saveUsuario()}"
+						styleClass="ui-button-warning" partialSubmit="true"
+						process="@this manage-dialog-content" update="@this @obs(save)"
+						oncomplete="if (args &amp;&amp; args.hideDialog) { PF('manageDialog').hide() }" />
+					<p:commandButton value="Salvar" icon="pi pi-check"
+						rendered="#{crudView.selectedUsuario.id ne null}"
+						actionListener="#{crudView.editUsuario()}"
+						styleClass="ui-button-warning" partialSubmit="true"
+						process="@this manage-dialog-content" update="@this @obs(edit)"
+						oncomplete="if (args &amp;&amp; args.hideDialog) { PF('manageDialog').hide() }" />
+				</div>
+
+				<p:autoUpdate on="save, load, delete" />
+
+			</h:panelGroup>
 
 		</p:dialog>
 
