@@ -1,5 +1,5 @@
 # padrao-dao
-Projeto para estudo do padrão DAO (Data Access Object) com separação de camadas de interface (api) e de implementação (impl), usando Java, o framework Jakarta Faces e a biblioteca de componentes PrimeFaces.
+Projeto para estudo de DAO (Data Access Object) e *Strategy Pattern*, usando Java, o framework Jakarta Faces e a biblioteca de componentes PrimeFaces.
 
 ### Instruções do funcionamento:
 Banco de dados: PostgreSQL 16 (script de tabela no projeto)
